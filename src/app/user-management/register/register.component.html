@@ -1,22 +1,23 @@
 <div>
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <div class="form-row">
-      <div class="form-group col-5">
-        <label>First Name</label>
+  <form class="example-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="spacer">
+      <mat-form-field class="example-full-width">
+        <mat-label>First Name</mat-label>
+
         <input
-          type="text"
+          matInput
           formControlName="firstName"
-          class="form-control"
           [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }"
         />
+
         <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
           <div *ngIf="f.firstName.errors.required">
             First Name is required
           </div>
         </div>
-      </div>
+      </mat-form-field>
     </div>
-    <div class="form-group">
+    <div class="spacer">
       <label>Email</label>
       <input
         type="text"
@@ -32,7 +33,7 @@
       </div>
     </div>
     <div class="form-row">
-      <div class="form-group col">
+      <div class="spacer col">
         <label>Password</label>
         <input
           type="password"
@@ -47,7 +48,7 @@
           </div>
         </div>
       </div>
-      <div class="form-group col">
+      <div class="spacer col">
         <label>Confirm Password</label>
         <input
           type="password"
@@ -67,6 +68,24 @@
           </div>
         </div>
       </div>
+
+      <div>
+        <label for="skills">skills</label>
+        <button class="skills-btn" (click)="addSkills()">+</button>
+        <div
+          formArrayName="skills"
+          *ngFor="
+            let skill of registerForm.controls.skills?.value;
+            let i = index
+          "
+        >
+          <ng-container [formGroupName]="i">
+            <input type="checkbox" formControlName="skill" /><label for="skill">
+              JS</label
+            >
+          </ng-container>
+        </div>
+      </div>
     </div>
     <div class="text-center">
       <button class="btn btn-primary mr-1">Register</button>
@@ -75,4 +94,8 @@
       </button>
     </div>
   </form>
+</div>
+
+<div>
+  {{ outputValues.firstName }}
 </div>

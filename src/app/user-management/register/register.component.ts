@@ -1,10 +1,16 @@
-import { Component, OnInit } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  AfterViewInit,
+} from "@angular/core";
 
 import {
   FormControl,
   FormGroup,
   Validators,
   FormBuilder,
+  FormArray,
 } from "@angular/forms";
 import { MustMatch } from "./must_watch";
 
@@ -12,16 +18,19 @@ import { MustMatch } from "./must_watch";
   selector: "register",
   templateUrl: "register.component.html",
   styleUrls: ["register.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
+  outputValues = {};
 
-  emailDomainValidator(control: FormControl) {
+  //custom validation for email.
+  private emailDomainValidator(control: FormControl) {
     let email = control.value;
     if (email && email.indexOf("@") != -1) {
       let [_, domain] = email.split("@");
-      if (domain !== "gmail.com") {
+      if (domain == "gmail.com") {
         return {
           emailDomain: {
             parsedDomain: domain,
@@ -48,6 +57,7 @@ export class RegisterComponent implements OnInit {
         ],
         password: ["", [Validators.required, Validators.minLength(6)]],
         confirmPassword: ["", Validators.required],
+        skills: this.formBuilder.array([], Validators.required),
       },
       {
         validator: MustMatch("password", "confirmPassword"),
@@ -67,11 +77,20 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.invalid) {
       return;
     }
-
     // display form values on success
-    console.log(
-      "SUCCESS!! :-)\n\n" + JSON.stringify(this.registerForm.value, null, 4)
+    // console.log(
+    //   "SUCCESS!! :-)\n\n" + JSON.stringify(this.registerForm.value, null, 4)
+    // );
+  }
+
+  addSkills() {
+    const skilled = this.registerForm.controls.skills as FormArray;
+    skilled.push(
+      this.formBuilder.group({
+        skill: "",
+      })
     );
+    console.log("registration form---", this.registerForm);
   }
 
   onReset() {

@@ -7,9 +7,10 @@ import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { RegisterComponent } from "./register/register.component";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import { CovidMaterialModule } from '../material.module';
 
 @NgModule({
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, CovidMaterialModule],
   declarations: [UserManagementComponent, RegisterComponent],
   exports: [UserManagementComponent, RegisterComponent],
 })
