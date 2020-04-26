@@ -13,6 +13,8 @@ import {
   FormArray,
 } from "@angular/forms";
 import { MustMatch } from "./must_watch";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "register",
@@ -24,6 +26,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
   outputValues = {};
+  responseData;
 
   //custom validation for email.
   private emailDomainValidator(control: FormControl) {
@@ -41,7 +44,11 @@ export class RegisterComponent implements OnInit {
     return null;
   }
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group(
@@ -70,7 +77,7 @@ export class RegisterComponent implements OnInit {
     return this.registerForm.controls;
   }
 
-  onSubmit() {
+  onSubmit(id: number) {
     this.submitted = true;
 
     // stop here if form is invalid
@@ -81,6 +88,27 @@ export class RegisterComponent implements OnInit {
     // console.log(
     //   "SUCCESS!! :-)\n\n" + JSON.stringify(this.registerForm.value, null, 4)
     // );
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-type": "application/json; charset=UTF-8",
+      }),
+    };
+    const httpBody = JSON.stringify({
+      title: "foo",
+      body: "bar",
+      userId: 1,
+    });
+
+    this.http
+      .post("https://jsonplaceholder.typicode.com/posts", httpBody, httpOptions)
+      .subscribe((data) => {
+        console.log("in post", data);
+        this.responseData = data;
+      });
+
+    // this.router.navigateByUrl("/stateTracker/1");
+    this.router.navigateByUrl("/stateTracker/" + id);
   }
 
   addSkills() {
@@ -90,7 +118,6 @@ export class RegisterComponent implements OnInit {
         skill: "",
       })
     );
-    console.log("registration form---", this.registerForm);
   }
 
   onReset() {

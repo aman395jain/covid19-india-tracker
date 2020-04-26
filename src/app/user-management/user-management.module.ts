@@ -7,10 +7,18 @@ import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { RegisterComponent } from "./register/register.component";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
-import { CovidMaterialModule } from '../material.module';
+import { CovidMaterialModule } from "../material.module";
+import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, CovidMaterialModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    FormsModule,
+    CovidMaterialModule,
+    HttpClientModule,
+  ],
   declarations: [UserManagementComponent, RegisterComponent],
   exports: [UserManagementComponent, RegisterComponent],
 })

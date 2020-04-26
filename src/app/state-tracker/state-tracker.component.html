@@ -1,0 +1,24 @@
+<!--component html goes here -->
+<p>in the state tracker: {{ params }}</p>
+<div class="filter-table">
+
+  <mat-form-field>
+    <input matInput placeholder="filter" (keyup)='filteTable($event)'>
+  </mat-form-field>
+</div>
+
+
+<mat-table matSort [dataSource]="statewiseData">
+  <ng-container *ngFor="let column of covidDataTable" [cdkColumnDef]="column.columnDef">
+    <mat-header-cell mat-sort-header *cdkHeaderCellDef>{{column.header}}</mat-header-cell>
+    <mat-cell *cdkCellDef="let element">
+      {{
+        column.cell(element)
+      }}</mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+<mat-paginator #tablePaginator [pageSize]='pageSize' [pageSizeOptions]="[5, 10, 20]" (page)='pageEvents($event)'>
+</mat-paginator>
